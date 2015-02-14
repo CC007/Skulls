@@ -29,7 +29,7 @@ public class SkullsCommand implements CommandExecutor {
                 return true;
             }
             if (args.length == 2 && args[0].equalsIgnoreCase("page") && StringUtils.isNumeric(args[1])) {
-                SkullsUtils.openPage(Integer.parseInt(args[1]), player);
+                SkullsUtils.openPage(Integer.parseInt(args[1])-1, player);
                 return true;
             }
             String skullName = StringUtils.join(args, ' ');

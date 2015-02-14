@@ -6,7 +6,7 @@ description: >
              Spawn in special skulls
 
 commands:
-    skull:
+    specialskull:
         description: "Open a menu or type a name"
         aliases: [sps]
 permissions:

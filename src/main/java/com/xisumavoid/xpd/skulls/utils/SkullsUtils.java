@@ -104,7 +104,7 @@ public class SkullsUtils {
         nmsStack.getTag().set("display", displayTag);
         nmsStack.getTag().set("SkullOwner", skullOwnerTag);
 
-        pages.get(size - 1).setOption(slot, CraftItemStack.asBukkitCopy(nmsStack), name, "");
+        pages.get(pages.size() - 1).setOption(slot, CraftItemStack.asBukkitCopy(nmsStack), name, "");
         slot = (slot + 1) % (rowsPerPage * 9);
         names.add(name);
     }

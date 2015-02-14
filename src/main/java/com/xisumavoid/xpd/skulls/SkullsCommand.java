@@ -18,7 +18,7 @@ public class SkullsCommand implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String commandLabel, String[] args) {
         if (!(sender instanceof Player)) {
-            return CommandUtils.sendMessage(sender, "Only players can perform this command");
+            return CommandUtils.sendMessage(sender, "&cOnly players can perform this command");
         }
 
         Player player = (Player) sender;
@@ -35,10 +35,10 @@ public class SkullsCommand implements CommandExecutor {
             String skullName = StringUtils.join(args, ' ');
             ItemStack item = SkullsUtils.getSkull(skullName);
             if (item == null) {
-                return CommandUtils.sendMessage(sender, "Invalid name");
+                return CommandUtils.sendMessage(sender, "&cInvalid name");
             }
             player.getInventory().addItem(item);
-            CommandUtils.sendMessage(sender, "Here's the skull");
+            CommandUtils.sendMessage(sender, "&aHere's the skull");
             return true;
         }
         return false;

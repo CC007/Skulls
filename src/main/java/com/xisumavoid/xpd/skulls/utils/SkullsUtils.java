@@ -44,7 +44,7 @@ public class SkullsUtils {
                     event.setWillClose(true);
                     if (event.getPosition() / 9 != rowsPerPage) {
                         event.getPlayer().getInventory().addItem(event.getItem());
-                        CommandUtils.sendMessage(event.getPlayer(), "Here's the skull");
+                        CommandUtils.sendMessage(event.getPlayer(), "&aHere's the skull");
                     }
                     if (event.getPosition() == rowsPerPage * 9) {
                         Bukkit.getScheduler().scheduleSyncDelayedTask(Main.instance, new Runnable() {
@@ -110,6 +110,10 @@ public class SkullsUtils {
     }
 
     public static void openPage(int page, final Player player) {
+        if (page >= pages.size() ||page < 0) {
+            CommandUtils.sendMessage(player, "&cInvalid page number");
+            return;
+        }
         pages.get(page).open(player);
     }
 

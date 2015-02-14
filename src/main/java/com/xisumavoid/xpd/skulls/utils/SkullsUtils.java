@@ -44,6 +44,7 @@ public class SkullsUtils {
                     event.setWillClose(true);
                     if (event.getPosition() / 9 != rowsPerPage) {
                         event.getPlayer().getInventory().addItem(event.getItem());
+                        CommandUtils.sendMessage(event.getPlayer(), "Here's the skull");
                     }
                     if (event.getPosition() == rowsPerPage * 9) {
                         Bukkit.getScheduler().scheduleSyncDelayedTask(Main.instance, new Runnable() {
@@ -51,7 +52,7 @@ public class SkullsUtils {
                             public void run() {
                                 pages.get(size - 1).open(event.getPlayer());
                             }
-                        });
+                        }, Main.instance.getConfig().getLong("delay"));
                     }
                     if (event.getPosition() == ((rowsPerPage + 1) * 9) - 1) {
                         Bukkit.getScheduler().scheduleSyncDelayedTask(Main.instance, new Runnable() {
@@ -59,9 +60,8 @@ public class SkullsUtils {
                             public void run() {
                                 pages.get(size + 1).open(event.getPlayer());
                             }
-                        });
+                        }, Main.instance.getConfig().getLong("delay"));
                     }
-                    CommandUtils.sendMessage(event.getPlayer(), "Here's the skull");
                 }
             });
 

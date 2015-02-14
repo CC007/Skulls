@@ -35,8 +35,9 @@ public class SkullsUtils {
 
     public static void addSkull(String name, UUID owner, String value) {
         final int rowsPerPage = Main.instance.getConfig().getInt("rowsperpage");
+        final int size = pages.size();
         if (slot == 0) {
-            IconMenu iconMenu = new IconMenu("Page " + (pages.size() + 1), (rowsPerPage + 1) * 9, new OptionClickEventHandler() {
+            IconMenu iconMenu = new IconMenu("Page " + (size + 1), (rowsPerPage + 1) * 9, new OptionClickEventHandler() {
 
                 @Override
                 public void onOptionClick(final IconMenu.OptionClickEvent event) {
@@ -48,7 +49,7 @@ public class SkullsUtils {
                         Bukkit.getScheduler().scheduleSyncDelayedTask(Main.instance, new Runnable() {
                             @Override
                             public void run() {
-                                pages.get(pages.size() - 1).open(event.getPlayer());
+                                pages.get(size - 1).open(event.getPlayer());
                             }
                         });
                     }
@@ -56,7 +57,7 @@ public class SkullsUtils {
                         Bukkit.getScheduler().scheduleSyncDelayedTask(Main.instance, new Runnable() {
                             @Override
                             public void run() {
-                                pages.get(pages.size() + 1).open(event.getPlayer());
+                                pages.get(size + 1).open(event.getPlayer());
                             }
                         });
                     }
@@ -69,7 +70,7 @@ public class SkullsUtils {
                 SkullMeta skullMeta1 = (SkullMeta) Bukkit.getItemFactory().getItemMeta(Material.SKULL_ITEM);
                 skullMeta1.setOwner("MHF_ArrowRight");
                 skull1.setItemMeta(skullMeta1);
-                pages.get(pages.size() - 1).setOption(((rowsPerPage + 1) * 9) - 1, skull1, "Next", "");
+                pages.get(size - 1).setOption(((rowsPerPage + 1) * 9) - 1, skull1, "Next", "");
 
                 ItemStack skull2 = new ItemStack(Material.SKULL_ITEM, 1, (byte) SkullType.PLAYER.ordinal());
                 SkullMeta skullMeta2 = (SkullMeta) Bukkit.getItemFactory().getItemMeta(Material.SKULL_ITEM);
@@ -103,7 +104,7 @@ public class SkullsUtils {
         nmsStack.getTag().set("display", displayTag);
         nmsStack.getTag().set("SkullOwner", skullOwnerTag);
 
-        pages.get(pages.size() - 1).setOption(slot, CraftItemStack.asBukkitCopy(nmsStack), name, "");
+        pages.get(size - 1).setOption(slot, CraftItemStack.asBukkitCopy(nmsStack), name, "");
         slot = (slot + 1) % (rowsPerPage * 9);
         names.add(name);
     }

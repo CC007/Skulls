@@ -39,16 +39,26 @@ public class SkullsUtils {
             IconMenu iconMenu = new IconMenu("Page " + (pages.size() + 1), (rowsPerPage + 1) * 9, new OptionClickEventHandler() {
 
                 @Override
-                public void onOptionClick(IconMenu.OptionClickEvent event) {
+                public void onOptionClick(final IconMenu.OptionClickEvent event) {
                     event.setWillClose(true);
                     if (event.getPosition() / 9 != rowsPerPage) {
                         event.getPlayer().getInventory().addItem(event.getItem());
                     }
                     if (event.getPosition() == rowsPerPage * 9) {
-                        pages.get(pages.size() - 1).open(event.getPlayer());
+                        Bukkit.getScheduler().scheduleSyncDelayedTask(Main.instance, new Runnable() {
+                            @Override
+                            public void run() {
+                                pages.get(pages.size() - 1).open(event.getPlayer());
+                            }
+                        });
                     }
                     if (event.getPosition() == ((rowsPerPage + 1) * 9) - 1) {
-                        pages.get(pages.size() + 1).open(event.getPlayer());
+                        Bukkit.getScheduler().scheduleSyncDelayedTask(Main.instance, new Runnable() {
+                            @Override
+                            public void run() {
+                                pages.get(pages.size() + 1).open(event.getPlayer());
+                            }
+                        });
                     }
                     CommandUtils.sendMessage(event.getPlayer(), "Here's the skull");
                 }
@@ -94,7 +104,7 @@ public class SkullsUtils {
         nmsStack.getTag().set("SkullOwner", skullOwnerTag);
 
         pages.get(pages.size() - 1).setOption(slot, CraftItemStack.asBukkitCopy(nmsStack), name, "");
-        slot = (slot + 1) % rowsPerPage * 9;
+        slot = (slot + 1) % (rowsPerPage * 9);
         names.add(name);
     }
 
@@ -138,7 +148,7 @@ public class SkullsUtils {
         }
         pages.clear();
     }
-    
+
     private static String readUrl(String urlString) {
         HttpURLConnection request = null;
         try {

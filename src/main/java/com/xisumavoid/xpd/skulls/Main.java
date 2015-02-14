@@ -53,8 +53,8 @@ public class Main extends JavaPlugin {
      * Used to register commands for the plugin
      */
     public void registerCommands() {
-        getCommand("skull").setExecutor(new SkullsCommand());
-        getCommand("skull").setTabCompleter(new SkullsTabCompleter());
+        getCommand("specialskull").setExecutor(new SkullsCommand());
+        getCommand("specialskull").setTabCompleter(new SkullsTabCompleter());
     }
 
     /**

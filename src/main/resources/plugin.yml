@@ -8,7 +8,7 @@ description: >
 commands:
     skull:
         description: "Open a menu or type a name"
-        aliases: [sk]
+        aliases: [sps]
 permissions:
-    buildoff.skull:
+    skulls.skull:
         description: Allows the ban command

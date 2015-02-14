@@ -29,5 +29,5 @@ public class SkullsTabCompleter implements TabCompleter {
 
         return completions;
     }
-    
+
 }

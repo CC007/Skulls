@@ -20,29 +20,27 @@ public class SkullsCommand implements CommandExecutor {
         if (!(sender instanceof Player)) {
             return CommandUtils.sendMessage(sender, "Only players can perform this command");
         }
-        
+
         Player player = (Player) sender;
-        
-        if (commandLabel.equalsIgnoreCase("specialskull") && CommandUtils.hasPermission(sender, "skulls.specialskull")) {
+
+        if ((commandLabel.equalsIgnoreCase("specialskull") || commandLabel.equalsIgnoreCase("sps")) && CommandUtils.hasPermission(sender, "skulls.specialskull")) {
             if (args.length == 0) {
                 SkullsUtils.openPage(0, player);
-                return true;
-            }
-            if (args.length == 1) {
-                ItemStack item = SkullsUtils.getSkull(args[0]);
-                if (item == null) {
-                    return CommandUtils.sendMessage(sender, "Invalid name");
-                }
-                player.getInventory().addItem(item);
-                CommandUtils.sendMessage(sender, "Here's the skull");
                 return true;
             }
             if (args.length == 2 && args[0].equalsIgnoreCase("page") && StringUtils.isNumeric(args[1])) {
                 SkullsUtils.openPage(Integer.parseInt(args[1]), player);
                 return true;
             }
+            String skullName = StringUtils.join(args, ' ');
+            ItemStack item = SkullsUtils.getSkull(skullName);
+            if (item == null) {
+                return CommandUtils.sendMessage(sender, "Invalid name");
+            }
+            player.getInventory().addItem(item);
+            CommandUtils.sendMessage(sender, "Here's the skull");
+            return true;
         }
         return false;
     }
-    
 }

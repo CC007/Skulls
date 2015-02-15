@@ -1,6 +1,6 @@
 name: XPD-Skulls
 version: 1.0
-main: com.xisumavoid.xpd.skulls.Main
+main: com.xisumavoid.xpd.skulls.Skulls
 author: Autom
 description: >
              Spawn in special skulls
@@ -10,5 +10,5 @@ commands:
         description: "Open a menu or type a name"
         aliases: [sps]
 permissions:
-    skulls.skull:
-        description: Allows the ban command
+    skulls.specialskull:
+        description: Allows the specialskull command

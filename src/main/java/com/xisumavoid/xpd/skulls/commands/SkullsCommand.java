@@ -1,4 +1,4 @@
-package com.xisumavoid.xpd.skulls;
+package com.xisumavoid.xpd.skulls.commands;
 
 import com.xisumavoid.xpd.skulls.utils.CommandUtils;
 import com.xisumavoid.xpd.skulls.utils.SkullsUtils;
@@ -15,6 +15,12 @@ import org.bukkit.inventory.ItemStack;
  */
 public class SkullsCommand implements CommandExecutor {
 
+    private final SkullsUtils skullsUtils;
+    
+    public SkullsCommand(SkullsUtils skullsUtils) {
+        this.skullsUtils = skullsUtils;
+    }
+
     @Override
     public boolean onCommand(CommandSender sender, Command command, String commandLabel, String[] args) {
         if (!(sender instanceof Player)) {
@@ -25,15 +31,15 @@ public class SkullsCommand implements CommandExecutor {
 
         if ((commandLabel.equalsIgnoreCase("specialskull") || commandLabel.equalsIgnoreCase("sps")) && CommandUtils.hasPermission(sender, "skulls.specialskull")) {
             if (args.length == 0) {
-                SkullsUtils.openPage(0, player);
+                skullsUtils.openPage(0, player);
                 return true;
             }
             if (args.length == 2 && args[0].equalsIgnoreCase("page") && StringUtils.isNumeric(args[1])) {
-                SkullsUtils.openPage(Integer.parseInt(args[1])-1, player);
+                skullsUtils.openPage(Integer.parseInt(args[1])-1, player);
                 return true;
             }
             String skullName = StringUtils.join(args, ' ');
-            ItemStack item = SkullsUtils.getSkull(skullName);
+            ItemStack item = skullsUtils.getSkull(skullName);
             if (item == null) {
                 return CommandUtils.sendMessage(sender, "&cInvalid name");
             }

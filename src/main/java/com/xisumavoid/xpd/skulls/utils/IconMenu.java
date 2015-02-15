@@ -1,5 +1,6 @@
-package com.xisumavoid.xpd.skulls;
+package com.xisumavoid.xpd.skulls.utils;
 
+import com.xisumavoid.xpd.skulls.Skulls;
 import java.util.ArrayList;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -24,14 +25,15 @@ public class IconMenu implements Listener {
     private Player player;
     private String[] optionNames;
     private ItemStack[] optionIcons;
+    private Skulls plugin;
  
-    public IconMenu(String name, int size, OptionClickEventHandler handler) {
+    public IconMenu(String name, int size, Skulls plugin, OptionClickEventHandler handler) {
         this.name = name;
         this.size = size;
         this.handler = handler;
         this.optionNames = new String[size];
         this.optionIcons = new ItemStack[size];
-        Main.instance.getServer().getPluginManager().registerEvents(this, Main.instance);
+        plugin.getServer().getPluginManager().registerEvents(this, plugin);
     }
  
     public IconMenu setOption(int position, ItemStack icon, String name, String... info) {
@@ -86,7 +88,7 @@ public class IconMenu implements Listener {
                 ((Player) event.getWhoClicked()).updateInventory();
                 if (e.willClose()) {
                     final Player p = (Player) event.getWhoClicked();
-                    Bukkit.getScheduler().scheduleSyncDelayedTask(Main.instance, new Runnable() {
+                    Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
                         @Override
                         public void run() {
                             p.closeInventory();

@@ -1,5 +1,7 @@
 package com.xisumavoid.xpd.skulls;
 
+import com.xisumavoid.xpd.skulls.commands.SkullsTabCompleter;
+import com.xisumavoid.xpd.skulls.commands.SkullsCommand;
 import com.xisumavoid.xpd.skulls.utils.SkullsUtils;
 import java.util.logging.Level;
 import net.milkbowl.vault.permission.Permission;
@@ -11,63 +13,33 @@ import org.bukkit.plugin.java.JavaPlugin;
  *
  * @author Autom
  */
-public class Main extends JavaPlugin {
+public class Skulls extends JavaPlugin {
 
-    public static Main instance;
-    public static Plugin vault = null;
-
-    public static Permission permission = null;
+    private Plugin vault = null;
+    private Permission permission = null;
+    private SkullsUtils skullsUtils;
 
     @Override
     public void onEnable() {
-        /**
-         * Instantiate the variables
-         */
-        instance = this;
-
-        /**
-         * Setup plugin hooks
-         */
-        setupHooks();
-        /**
-         * Register commands
-         */
-        registerCommands();
-
-        /**
-         * Config stuffs
-         */
-        this.getConfig().options().copyDefaults(true);
-        saveDefaultConfig();
-        SkullsUtils.loadSkulls();
-    }
-
-    @Override
-    public void onDisable() {
-        SkullsUtils.unloadSkulls();
-
-        instance = null;
-    }
-
-    /**
-     * Used to register commands for the plugin
-     */
-    public void registerCommands() {
-        getCommand("specialskull").setExecutor(new SkullsCommand());
-        getCommand("specialskull").setTabCompleter(new SkullsTabCompleter());
-    }
-
-    /**
-     * Setup plugin hooks
-     */
-    public void setupHooks() {
-        /**
-         * Vault
-         */
+        /* Setup plugin hooks */
         vault = getPlugin("Vault");
         if (vault != null) {
             setupPermissions();
         }
+        /* Register commands */
+        getCommand("specialskull").setExecutor(new SkullsCommand(skullsUtils));
+        getCommand("specialskull").setTabCompleter(new SkullsTabCompleter(skullsUtils));
+
+        /* Config stuffs */
+        this.getConfig().options().copyDefaults(true);
+        saveDefaultConfig();
+        skullsUtils = new SkullsUtils(this);
+        skullsUtils.loadSkulls();
+    }
+
+    @Override
+    public void onDisable() {
+        skullsUtils.unloadSkulls();
     }
 
     /**
@@ -104,5 +76,13 @@ public class Main extends JavaPlugin {
             getLogger().log(Level.WARNING, "&cCould not find plugin \"{0}\"!", pluginName);
             return null;
         }
+    }
+
+    public Plugin getVault() {
+        return vault;
+    }
+
+    public Permission getPermission() {
+        return permission;
     }
 }

@@ -1,8 +1,7 @@
 package com.xisumavoid.xpd.skulls.utils;
 
-import com.xisumavoid.xpd.skulls.IconMenu;
-import com.xisumavoid.xpd.skulls.IconMenu.OptionClickEventHandler;
-import com.xisumavoid.xpd.skulls.Main;
+import com.xisumavoid.xpd.skulls.utils.IconMenu.OptionClickEventHandler;
+import com.xisumavoid.xpd.skulls.Skulls;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -29,15 +28,20 @@ import org.json.JSONArray;
  */
 public class SkullsUtils {
 
-    private static List<IconMenu> pages = new ArrayList<>();
-    private static List<String> names = new ArrayList<>();
-    private static int slot = 0;
+    private final List<IconMenu> pages = new ArrayList<>();
+    private final List<String> names = new ArrayList<>();
+    private final Skulls plugin;
+    private int slot = 0;
+    
+    public SkullsUtils(Skulls skulls) {
+        this.plugin = skulls;
+    }
 
-    public static void addSkull(String name, UUID owner, String value) {
-        final int rowsPerPage = Main.instance.getConfig().getInt("rowsperpage");
+    public void addSkull(String name, UUID owner, String value) {
+        final int rowsPerPage = plugin.getConfig().getInt("rowsperpage");
         final int size = pages.size();
         if (slot == 0) {
-            IconMenu iconMenu = new IconMenu("Page " + (size + 1), (rowsPerPage + 1) * 9, new OptionClickEventHandler() {
+            IconMenu iconMenu = new IconMenu("Page " + (size + 1), (rowsPerPage + 1) * 9, plugin, new OptionClickEventHandler() {
 
                 @Override
                 public void onOptionClick(final IconMenu.OptionClickEvent event) {
@@ -47,20 +51,20 @@ public class SkullsUtils {
                         CommandUtils.sendMessage(event.getPlayer(), "&aHere's the skull");
                     }
                     if (event.getPosition() == rowsPerPage * 9) {
-                        Bukkit.getScheduler().scheduleSyncDelayedTask(Main.instance, new Runnable() {
+                        Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
                             @Override
                             public void run() {
                                 pages.get(size - 1).open(event.getPlayer());
                             }
-                        }, Main.instance.getConfig().getLong("delay"));
+                        }, plugin.getConfig().getLong("delay"));
                     }
                     if (event.getPosition() == ((rowsPerPage + 1) * 9) - 1) {
-                        Bukkit.getScheduler().scheduleSyncDelayedTask(Main.instance, new Runnable() {
+                        Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
                             @Override
                             public void run() {
                                 pages.get(size + 1).open(event.getPlayer());
                             }
-                        }, Main.instance.getConfig().getLong("delay"));
+                        }, plugin.getConfig().getLong("delay"));
                     }
                 }
             });
@@ -109,7 +113,7 @@ public class SkullsUtils {
         names.add(name);
     }
 
-    public static void openPage(int page, final Player player) {
+    public void openPage(int page, final Player player) {
         if (page >= pages.size() ||page < 0) {
             CommandUtils.sendMessage(player, "&cInvalid page number");
             return;
@@ -117,11 +121,11 @@ public class SkullsUtils {
         pages.get(page).open(player);
     }
 
-    public static List<String> getNames() {
+    public List<String> getNames() {
         return names;
     }
 
-    public static ItemStack getSkull(String skullName) {
+    public ItemStack getSkull(String skullName) {
         for (IconMenu page : pages) {
             ItemStack item = page.getItemByName(skullName);
             if (item != null) {
@@ -135,8 +139,8 @@ public class SkullsUtils {
         return skull;
     }
 
-    public static void loadSkulls() {
-        JSONArray json = new JSONArray(readUrl(Main.instance.getConfig().getString("url")));
+    public void loadSkulls() {
+        JSONArray json = new JSONArray(readUrl(plugin.getConfig().getString("url")));
         int i;
         for (i = 0; i < json.length(); i++) {
             String name = json.getJSONObject(i).getString("name");
@@ -144,17 +148,17 @@ public class SkullsUtils {
             String value = json.getJSONObject(i).getString("value");
             addSkull(name, skullOwner, value);
         }
-        Main.instance.getLogger().log(Level.INFO, "Loaded {0} skulls", i);
+        plugin.getLogger().log(Level.INFO, "Loaded {0} skulls", i);
     }
 
-    public static void unloadSkulls() {
+    public void unloadSkulls() {
         for (IconMenu page : pages) {
             page.destroy();
         }
         pages.clear();
     }
 
-    private static String readUrl(String urlString) {
+    private String readUrl(String urlString) {
         HttpURLConnection request = null;
         try {
             URL url = new URL(urlString);
@@ -184,7 +188,7 @@ public class SkullsUtils {
                 }
             }
         } catch (IOException e) {
-            Main.instance.getLogger().severe("URL not found");
+            plugin.getLogger().severe("URL not found");
         } finally {
 
             if (request != null) {

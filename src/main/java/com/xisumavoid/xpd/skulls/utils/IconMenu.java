@@ -33,6 +33,7 @@ public class IconMenu implements Listener {
         this.handler = handler;
         this.optionNames = new String[size];
         this.optionIcons = new ItemStack[size];
+        this.plugin = plugin;
         plugin.getServer().getPluginManager().registerEvents(this, plugin);
     }
  
@@ -76,7 +77,7 @@ public class IconMenu implements Listener {
     }
  
     @EventHandler(priority = EventPriority.HIGHEST)
-    void onInventoryClick(InventoryClickEvent event) {
+    public void onInventoryClick(InventoryClickEvent event) {
         if (event.getInventory().getTitle().equals(name) && (player == null || event.getWhoClicked() == player)) {
             event.setCancelled(true);
             if (event.getClick() != ClickType.LEFT)

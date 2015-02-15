@@ -21,6 +21,10 @@ public class Skulls extends JavaPlugin {
 
     @Override
     public void onEnable() {
+        /* Setup the utils */
+        skullsUtils = new SkullsUtils(this);
+        skullsUtils.loadSkulls();
+        
         /* Setup plugin hooks */
         vault = getPlugin("Vault");
         if (vault != null) {
@@ -33,8 +37,6 @@ public class Skulls extends JavaPlugin {
         /* Config stuffs */
         this.getConfig().options().copyDefaults(true);
         saveDefaultConfig();
-        skullsUtils = new SkullsUtils(this);
-        skullsUtils.loadSkulls();
     }
 
     @Override

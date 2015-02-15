@@ -41,7 +41,10 @@ public class SkullsUtils {
         final int rowsPerPage = plugin.getConfig().getInt("rowsperpage");
         final int size = pages.size();
         if (slot == 0) {
-            IconMenu iconMenu = new IconMenu("Page " + (size + 1), (rowsPerPage + 1) * 9, plugin, new OptionClickEventHandler() {
+            for (IconMenu page : pages) {
+                page.setName(page.getName().split("/")[0] + "/" + (size + 1));
+            }
+            IconMenu iconMenu = new IconMenu("Page " + (size + 1) + "/" + (size + 1), (rowsPerPage + 1) * 9, plugin, new OptionClickEventHandler() {
 
                 @Override
                 public void onOptionClick(final IconMenu.OptionClickEvent event) {

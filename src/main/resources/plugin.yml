@@ -8,7 +8,7 @@ description: >
 commands:
     specialskull:
         description: "Open a menu or type a name"
-        aliases: [sps]
+        aliases: [sps, skull]
 permissions:
     skulls.specialskull:
         description: Allows the specialskull command

@@ -36,7 +36,7 @@ public class SkullsCommand implements CommandExecutor {
 
         Player player = (Player) sender;
 
-        if ((commandLabel.equalsIgnoreCase("specialskull") || commandLabel.equalsIgnoreCase("sps")) && CommandUtils.hasPermission(sender, "skulls.specialskull")) {
+        if (CommandUtils.hasPermission(sender, "skulls.specialskull")) {
             if (args.length == 0) {
                 skullsUtils.openPage(0, player);
                 return true;

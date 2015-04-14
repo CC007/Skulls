@@ -3,6 +3,7 @@ package com.xisumavoid.xpd.skulls.commands;
 import com.xisumavoid.xpd.skulls.utils.CommandUtils;
 import com.xisumavoid.xpd.skulls.utils.SkullsUtils;
 import org.apache.commons.lang.StringUtils;
+import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -16,13 +17,19 @@ import org.bukkit.inventory.ItemStack;
 public class SkullsCommand implements CommandExecutor {
 
     private final SkullsUtils skullsUtils;
-    
+
     public SkullsCommand(SkullsUtils skullsUtils) {
         this.skullsUtils = skullsUtils;
     }
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String commandLabel, String[] args) {
+        if (args.length == 1 && args[0].equalsIgnoreCase("update") && CommandUtils.hasPermission(sender, "skulls.update")) {
+            skullsUtils.updateSkulls();
+            sender.sendMessage(ChatColor.GOLD + "Now you need to reload this plugin!");
+            return true;
+        }
+
         if (!(sender instanceof Player)) {
             return CommandUtils.sendMessage(sender, "&cOnly players can perform this command");
         }
@@ -34,8 +41,9 @@ public class SkullsCommand implements CommandExecutor {
                 skullsUtils.openPage(0, player);
                 return true;
             }
+
             if (args.length == 2 && args[0].equalsIgnoreCase("page") && StringUtils.isNumeric(args[1])) {
-                skullsUtils.openPage(Integer.parseInt(args[1])-1, player);
+                skullsUtils.openPage(Integer.parseInt(args[1]) - 1, player);
                 return true;
             }
             String skullName = StringUtils.join(args, ' ');

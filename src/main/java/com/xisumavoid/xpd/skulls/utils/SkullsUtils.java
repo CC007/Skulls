@@ -3,17 +3,23 @@ package com.xisumavoid.xpd.skulls.utils;
 import com.xisumavoid.xpd.skulls.utils.IconMenu.OptionClickEventHandler;
 import com.xisumavoid.xpd.skulls.Skulls;
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 import java.util.UUID;
 import java.util.logging.Level;
 import net.minecraft.server.v1_8_R2.NBTTagCompound;
 import net.minecraft.server.v1_8_R2.NBTTagList;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.SkullType;
 import org.bukkit.craftbukkit.v1_8_R2.inventory.CraftItemStack;
@@ -32,7 +38,7 @@ public class SkullsUtils {
     private final List<String> names = new ArrayList<>();
     private final Skulls plugin;
     private int slot = 0;
-    
+
     public SkullsUtils(Skulls skulls) {
         this.plugin = skulls;
     }
@@ -117,7 +123,7 @@ public class SkullsUtils {
     }
 
     public void openPage(int page, final Player player) {
-        if (page >= pages.size() ||page < 0) {
+        if (page >= pages.size() || page < 0) {
             CommandUtils.sendMessage(player, "&cInvalid page number");
             return;
         }
@@ -143,7 +149,19 @@ public class SkullsUtils {
     }
 
     public void loadSkulls() {
-        JSONArray json = new JSONArray(readUrl(plugin.getConfig().getString("url")));
+        File file = new File(plugin.getDataFolder(), "skulls.json");
+        if (!file.exists()) {
+            updateSkulls();
+        }
+        String jsonString = "";
+        try (Scanner scanner = new Scanner(file)) {
+            while (scanner.hasNextLine()) {
+                jsonString += scanner.nextLine();
+            }
+        } catch (FileNotFoundException ex) {
+            plugin.getLogger().log(Level.SEVERE, "Couldn't find skulls.json");
+        }
+        JSONArray json = new JSONArray(jsonString);
         int i;
         for (i = 0; i < json.length(); i++) {
             String name = json.getJSONObject(i).getString("name");
@@ -159,6 +177,29 @@ public class SkullsUtils {
             page.destroy();
         }
         pages.clear();
+    }
+
+    public void updateSkulls() {
+        File dataFolder = plugin.getDataFolder();
+        if (!dataFolder.exists()) {
+            dataFolder.mkdir();
+        }
+        File file = new File(plugin.getDataFolder(), "skulls.json");
+        if (!file.exists()) {
+            try {
+                file.createNewFile();
+            } catch (IOException e) {
+                plugin.getLogger().log(Level.SEVERE, "Couldn't create skulls.json");
+            }
+        }
+        plugin.getServer().getConsoleSender().sendMessage("[XPD-Skulls] " + ChatColor.GREEN + "Updating skulls.json!");
+        JSONArray json = new JSONArray(readUrl(plugin.getConfig().getString("url")));
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(file, true))) {
+            writer.write(json.toString());
+            writer.flush();
+        } catch (IOException ex) {
+            plugin.getLogger().log(Level.SEVERE, "Couldn't write to skulls.json");
+        }
     }
 
     private String readUrl(String urlString) {

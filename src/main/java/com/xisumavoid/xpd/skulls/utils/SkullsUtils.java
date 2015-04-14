@@ -194,7 +194,8 @@ public class SkullsUtils {
         }
         plugin.getServer().getConsoleSender().sendMessage("[XPD-Skulls] " + ChatColor.GREEN + "Updating skulls.json!");
         JSONArray json = new JSONArray(readUrl(plugin.getConfig().getString("url")));
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(file, true))) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(file, false))) {
+            
             writer.write(json.toString());
             writer.flush();
         } catch (IOException ex) {

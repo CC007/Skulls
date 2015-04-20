@@ -66,7 +66,6 @@ public class SkullsCategory {
                 public void onOptionClick(final IconMenu.OptionClickEvent event) {
                     event.setWillClose(true);
                     if (event.getPosition() / 9 != rowsPerPage) {
-                        plugin.getLogger().log(Level.INFO, "{0}: {1} + {2}", new Object[]{event.getPosition(), event.getName(), categoryName});
                         event.getPlayer().getInventory().addItem(event.getItem());
                         event.getPlayer().sendMessage(ChatColor.GREEN + "Here's the skull");
                         return;

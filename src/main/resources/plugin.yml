@@ -10,6 +10,8 @@ commands:
         description: "Open a menu or type a name"
         aliases: [sps, skull, skulls]
 permissions:
+    skulls.ownskull:
+        description: Allows the user to spawn in his own head
     skulls.specialskull:
         description: Allows the specialskull command
     skulls.update:

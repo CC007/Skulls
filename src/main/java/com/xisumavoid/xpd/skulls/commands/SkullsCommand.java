@@ -2,24 +2,29 @@ package com.xisumavoid.xpd.skulls.commands;
 
 import com.xisumavoid.xpd.skulls.Skulls;
 import org.apache.commons.lang.StringUtils;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Material;
+import org.bukkit.SkullType;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.SkullMeta;
 
 /**
  *
  * @author Autom
  */
 public class SkullsCommand implements CommandExecutor {
-    
+
     private final Skulls plugin;
-    
+
     public SkullsCommand(Skulls plugin) {
         this.plugin = plugin;
     }
-    
+
     @Override
     public boolean onCommand(CommandSender sender, Command command, String commandLabel, String[] args) {
         if (args.length > 0 && args[0].equalsIgnoreCase("update") && sender.hasPermission("skulls.update")) {
@@ -37,27 +42,27 @@ public class SkullsCommand implements CommandExecutor {
                     return true;
                 }
             }
-            
+
             sender.sendMessage(ChatColor.GOLD + "Now you need to reload this plugin!");
             return true;
         }
-        
+
         if (!(sender instanceof Player)) {
             sender.sendMessage(ChatColor.RED + "Only players can perform this command");
             return true;
         }
-        
+
         Player player = (Player) sender;
-        
+
         if (player.hasPermission("skulls.specialskull")) {
-            
+
             if (args.length == 0) {
                 if (plugin.getConfig().isInt("categories.everything")) {
                     plugin.getSkullsUtils().getCategories().get(plugin.getConfig().getInt("categories.everything")).openPage(0, player);
                     return true;
                 }
             }
-            
+
             if (args.length > 0) {
                 if (args[0].equalsIgnoreCase("categories")) {
                     sendCategories(sender);
@@ -75,9 +80,16 @@ public class SkullsCommand implements CommandExecutor {
                 return true;
             }
         }
+
+        if (player.hasPermission("skulls.ownskull")) {
+            ItemStack skull = new ItemStack(Material.SKULL_ITEM, 1, (byte) SkullType.PLAYER.ordinal());
+            SkullMeta skullMeta = (SkullMeta) Bukkit.getItemFactory().getItemMeta(Material.SKULL_ITEM);
+            skullMeta.setOwner(player.getName());
+            skull.setItemMeta(skullMeta);
+        }
         return false;
     }
-    
+
     private void sendCategories(CommandSender sender) {
         sender.sendMessage(ChatColor.RED + "No category found with that name, possible categories: " + ChatColor.GOLD + StringUtils.join(plugin.getSkullsUtils().getCategories().keySet(), ", "));
     }

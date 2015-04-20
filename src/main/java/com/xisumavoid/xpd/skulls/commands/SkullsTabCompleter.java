@@ -1,5 +1,6 @@
 package com.xisumavoid.xpd.skulls.commands;
 
+import com.xisumavoid.xpd.skulls.utils.SkullsCategory;
 import com.xisumavoid.xpd.skulls.utils.SkullsUtils;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -14,26 +15,29 @@ import org.bukkit.util.StringUtil;
  * @author Autom
  */
 public class SkullsTabCompleter implements TabCompleter {
-
+    
     private final SkullsUtils skullsUtils;
     
     public SkullsTabCompleter(SkullsUtils skullsUtils) {
         this.skullsUtils = skullsUtils;
     }
-
+    
     @Override
     public List<String> onTabComplete(CommandSender sender, Command command, String label, String[] args) {
         List<String> completions = new ArrayList<>();
-
+        
         if (args.length == 1) {
             String partialCommand = args[0];
-            List<String> commands = skullsUtils.getNames();
+            List<String> commands = new ArrayList<>();
+            for (SkullsCategory value : skullsUtils.getCategories().values()) {
+                commands.addAll(value.getNames());
+            }
             StringUtil.copyPartialMatches(partialCommand, commands, completions);
         }
-
+        
         Collections.sort(completions);
-
+        
         return completions;
     }
-
+    
 }

@@ -25,7 +25,8 @@ public class IconMenu implements Listener {
     private Player player;
     private String[] optionNames;
     private ItemStack[] optionIcons;
-    private Skulls plugin;
+    private final Skulls plugin;
+    private Inventory inventory;
 
     public IconMenu(String name, int size, Skulls plugin, OptionClickEventHandler handler) {
         this.name = name;
@@ -40,7 +41,7 @@ public class IconMenu implements Listener {
     public void setName(String name) {
         this.name = name;
     }
-    
+
     public String getName() {
         return name;
     }
@@ -60,10 +61,12 @@ public class IconMenu implements Listener {
     }
 
     public void open(Player player) {
-        Inventory inventory = Bukkit.createInventory(player, size, name);
-        for (int i = 0; i < optionIcons.length; i++) {
-            if (optionIcons[i] != null) {
-                inventory.setItem(i, optionIcons[i]);
+        if (inventory == null) {
+            inventory = Bukkit.createInventory(player, size, name);
+            for (int i = 0; i < optionIcons.length; i++) {
+                if (optionIcons[i] != null) {
+                    inventory.setItem(i, optionIcons[i]);
+                }
             }
         }
         player.openInventory(inventory);

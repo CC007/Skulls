@@ -42,3 +42,6 @@ hs_err_pid*
 zgo.bat
 nb-configuration.xml
 error.txt
+
+# Project specific
+/src/main/java/org

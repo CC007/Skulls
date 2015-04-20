@@ -1,3 +1,17 @@
 rowsperpage: 5
-url: http://vps.xisumavoid.com/ajax/skulls
 delay: 5
+updateonstartup: true
+# Add category called "everything" for an everything-category
+categories:
+    everything: 0
+    food: 1
+    devices: 2
+    misc: 3
+    alphabet: 4
+    interior: 5
+    color: 6
+    blocks: 7
+    games: 8
+    mobs: 9
+    characters: 10
+    pokemon: 11

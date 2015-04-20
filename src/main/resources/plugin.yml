@@ -12,3 +12,5 @@ commands:
 permissions:
     skulls.specialskull:
         description: Allows the specialskull command
+    skulls.update:
+        description: Allows the update command

@@ -2,6 +2,7 @@ package com.xisumavoid.xpd.skulls;
 
 import com.xisumavoid.xpd.skulls.commands.SkullsTabCompleter;
 import com.xisumavoid.xpd.skulls.commands.SkullsCommand;
+import com.xisumavoid.xpd.skulls.utils.SkullsCategory;
 import com.xisumavoid.xpd.skulls.utils.SkullsUtils;
 import java.util.logging.Level;
 import net.milkbowl.vault.permission.Permission;
@@ -23,15 +24,14 @@ public class Skulls extends JavaPlugin {
     public void onEnable() {
         /* Setup the utils */
         skullsUtils = new SkullsUtils(this);
-        skullsUtils.loadSkulls();
-        
+
         /* Setup plugin hooks */
         vault = getPlugin("Vault");
         if (vault != null) {
             setupPermissions();
         }
         /* Register commands */
-        getCommand("specialskull").setExecutor(new SkullsCommand(skullsUtils));
+        getCommand("specialskull").setExecutor(new SkullsCommand(this));
         getCommand("specialskull").setTabCompleter(new SkullsTabCompleter(skullsUtils));
 
         /* Config stuffs */
@@ -41,7 +41,13 @@ public class Skulls extends JavaPlugin {
 
     @Override
     public void onDisable() {
-        skullsUtils.unloadSkulls();
+        for (SkullsCategory value : skullsUtils.getCategories().values()) {
+            value.unloadSkulls();
+        }
+        skullsUtils.getCategories().clear();
+        skullsUtils = null;
+        vault = null;
+        permission = null;
     }
 
     /**
@@ -86,5 +92,9 @@ public class Skulls extends JavaPlugin {
 
     public Permission getPermission() {
         return permission;
+    }
+
+    public SkullsUtils getSkullsUtils() {
+        return skullsUtils;
     }
 }

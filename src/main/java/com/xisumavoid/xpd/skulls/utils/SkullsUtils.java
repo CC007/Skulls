@@ -8,14 +8,14 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
-import net.minecraft.server.v1_8_R2.NBTTagCompound;
-import net.minecraft.server.v1_8_R2.NBTTagList;
+import net.minecraft.server.v1_8_R1.NBTTagCompound;
+import net.minecraft.server.v1_8_R1.NBTTagList;
 import org.apache.commons.io.IOUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.SkullType;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.craftbukkit.v1_8_R2.inventory.CraftItemStack;
+import org.bukkit.craftbukkit.v1_8_R1.inventory.CraftItemStack;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.SkullMeta;
 import org.json.JSONArray;
@@ -64,7 +64,7 @@ public class SkullsUtils {
     }
 
     public ItemStack createSkull(String name, String value, UUID owner) {
-        net.minecraft.server.v1_8_R2.ItemStack nmsStack = new net.minecraft.server.v1_8_R2.ItemStack(net.minecraft.server.v1_8_R2.Items.SKULL, 1, 3);
+        net.minecraft.server.v1_8_R1.ItemStack nmsStack = new net.minecraft.server.v1_8_R1.ItemStack(net.minecraft.server.v1_8_R1.Items.SKULL, 1, 3);
         nmsStack.setTag(new NBTTagCompound());
         NBTTagCompound displayTag = new NBTTagCompound();
         NBTTagCompound entryTag = new NBTTagCompound();

@@ -204,6 +204,7 @@ public class SkullsCategory {
         if (categoryName.equalsIgnoreCase("everything")) {
             return;
         }
+
         File dataFolder = plugin.getDataFolder();
         if (!dataFolder.exists()) {
             dataFolder.mkdir();
@@ -217,12 +218,52 @@ public class SkullsCategory {
             }
         }
         plugin.getServer().getConsoleSender().sendMessage("[XPD-Skulls] " + ChatColor.GREEN + "Updating " + categoryName + ".json!");
-        JSONArray json = plugin.getSkullsUtils().fromUrl("http://heads.freshcoal.com/mainapi.php?query=" + categoryName);
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(file, false))) {
-            writer.write(json.toString());
-            writer.flush();
-        } catch (IOException ex) {
-            plugin.getLogger().log(Level.SEVERE, "Couldn't write to {0}.json", categoryName);
+        if (categoryName.equalsIgnoreCase("sweeper")) {
+//Unknown      
+            JSONArray json = plugin.getSkullsUtils().fromUrl("http://heads.freshcoal.com/api.php?query=Minesweeper Unknown Tile");
+            try (BufferedWriter writer = new BufferedWriter(new FileWriter(file, false))) {
+                writer.write(json.toString());
+                writer.flush();
+            } catch (IOException ex) {
+                plugin.getLogger().log(Level.SEVERE, "Couldn't write to {0}.json", categoryName);
+            }
+
+//Flag
+            json = plugin.getSkullsUtils().fromUrl("http://heads.freshcoal.com/api.php?query=Minesweeper Flag Tile");
+            try (BufferedWriter writer = new BufferedWriter(new FileWriter(file, true))) {
+                writer.write(json.toString());
+                writer.flush();
+            } catch (IOException ex) {
+                plugin.getLogger().log(Level.SEVERE, "Couldn't write to {0}.json", categoryName);
+            }
+
+//Numbers
+            for (int i = 0; i < 9; i++) {
+                json = plugin.getSkullsUtils().fromUrl("http://heads.freshcoal.com/api.php?query=Minesweeper " + i + " Tile");
+                try (BufferedWriter writer = new BufferedWriter(new FileWriter(file, true))) {
+                    writer.write(json.toString());
+                    writer.flush();
+                } catch (IOException ex) {
+                    plugin.getLogger().log(Level.SEVERE, "Couldn't write to {0}.json", categoryName);
+                }
+            }
+
+//Bomb
+            json = plugin.getSkullsUtils().fromUrl("http://heads.freshcoal.com/mainapi.php?query=TNT [1.8]");
+            try (BufferedWriter writer = new BufferedWriter(new FileWriter(file, true))) {
+                writer.write(json.toString());
+                writer.flush();
+            } catch (IOException ex) {
+                plugin.getLogger().log(Level.SEVERE, "Couldn't write to {0}.json", categoryName);
+            }
+        } else {
+            JSONArray json = plugin.getSkullsUtils().fromUrl("http://heads.freshcoal.com/mainapi.php?query=" + categoryName);
+            try (BufferedWriter writer = new BufferedWriter(new FileWriter(file, false))) {
+                writer.write(json.toString());
+                writer.flush();
+            } catch (IOException ex) {
+                plugin.getLogger().log(Level.SEVERE, "Couldn't write to {0}.json", categoryName);
+            }
         }
     }
 }

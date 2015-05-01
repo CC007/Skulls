@@ -249,7 +249,7 @@ public class SkullsCategory {
             }
 
 //Bomb
-            json = plugin.getSkullsUtils().fromUrl("http://heads.freshcoal.com/mainapi.php?query=TNT [1.8]");
+            json = plugin.getSkullsUtils().fromUrl("http://heads.freshcoal.com/api.php?query=tnt+[1.8]");
             try (BufferedWriter writer = new BufferedWriter(new FileWriter(file, true))) {
                 writer.write(json.toString());
                 writer.flush();

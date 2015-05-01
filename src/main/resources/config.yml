@@ -15,4 +15,16 @@ categories:
     mobs: 9
     characters: 10
     pokemon: 11
-    sweeper: 12
+
+
+customcategories:
+    sweeper:
+        id: 12
+        urls: 
+        - Minesweeper
+        - tnt+[1.8]
+    rwby:
+        id: 13
+        urls:
+        - rwby
+            
